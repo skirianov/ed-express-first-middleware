@@ -1,3 +1,4 @@
+// All users in the app
 const USERS = [
   {
     id: 1,
@@ -42,6 +43,11 @@ const USERS = [
   },
 ];
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// Write your code down below
+
+
+
+// Uncomment the code below once you initialized your app
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
