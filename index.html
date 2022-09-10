@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+  <body>
+    <button onclick="getUsers()">Get users</button>
+
+    <input type="text" id="myInput" placeholder="Enter user Id (1-10)">
+    <button onclick="getUser()">Get User by Id</button>
+
+    <div id="users"></div>
+    <div id="error"></div>
+    <script>
+      const getUsers = () => {
+        return fetch("http://localhost:8080/users")
+          .then((response) => response.json())
+          .then((users) => {
+            const usersElement = document.getElementById("users");
+            usersElement.style = "display: block; background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px; border: 1px solid #ccc; box-shadow: 0 0 5px #ccc; width: 300px;";
+            usersElement.innerHTML = "";
+            users.forEach((user) => {
+              const userElement = document.createElement("div");
+              userElement.innerHTML = `
+                <div>${user.name}</div>
+                <div>${user.id}</div>
+                <br />
+              `;
+              usersElement.appendChild(userElement);
+            });
+            const errorElement = document.getElementById("error");
+            errorElement.style = "display: none;";
+          })
+      };
+
+      const getUser = () => {
+        const userId = document.getElementById("myInput").value;
+
+        console.log(userId)
+        return fetch('http://localhost:8080/users/'+userId)
+          .then((response) => response.json())
+          .then((user) => {
+            if (user.error) {
+              const errorElement = document.getElementById("error");
+              errorElement.style = "display: block; background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px; border: 1px solid #ccc; box-shadow: 0 0 5px #ccc; width: 300px;";
+              errorElement.innerHTML = "";
+              const errorElement2 = document.createElement("div");
+              errorElement2.innerHTML = `
+                <div style="color: red;">${user.error}</div>
+              `;
+              errorElement.appendChild(errorElement2);
+
+              setTimeout(() => {
+                errorElement.style = "display: none;";
+              }, 8000);
+            } else {
+              const usersElement = document.getElementById("users");
+              usersElement.style = "display: block; background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px; border: 1px solid #ccc; box-shadow: 0 0 5px #ccc; width: 300px;";
+              usersElement.innerHTML = "";
+              const userElement = document.createElement("div");
+              userElement.innerHTML = `
+                  <div>${user.name}</div>
+                  <div>${user.id}</div>
+              `;
+              usersElement.appendChild(userElement);
+              const errorElement = document.getElementById("error");
+              errorElement.style = "display: none;";
+            }
+          })
+      }
+    </script>
+  </body>
+</html>
